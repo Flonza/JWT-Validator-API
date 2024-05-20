@@ -1,10 +1,10 @@
 import bcryptjs from "bcryptjs";
-import { AuthModel } from "../models/auth.model.js";
+import { AuthModel } from "../../models/auth/users-auth.model.js";
 import dotnev from "dotenv";
 
 dotnev.config();
 
-export class AuthController {
+export class UserAuthController {
   //-----------------------------------------------------------------------------------
   //METODO DE CREACION O REGISTROS DE USUARIOS
   //-----------------------------------------------------------------------------------
@@ -23,14 +23,6 @@ export class AuthController {
     try {
       // Espera la respuesta de createNewUser usando await o maneja la promesa devuelta
       const result = await AuthModel.createNewUser({ input: newUser });
-      const key = result.response;
-      const cookieOptions = {
-        expires: new Date(
-          Date.now() + process.env.JWT_COOKIE_EXPIRE_TIME * 60 * 60 * 1000
-        ),
-        path: "/",
-      };
-      res.cookie("jwt", key.key, cookieOptions);
       res.status(201).json(result);
     } catch (err) {
       console.log(err);

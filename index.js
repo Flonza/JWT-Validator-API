@@ -1,8 +1,8 @@
 import express from "express";
 import { CORS } from "./middlewares/CORS.js";
-import { AuthRouter } from "./routes/auth.routes.js";
 import jwt from "jsonwebtoken";
 import { verifyToken } from "./middlewares/verifyToken.js";
+import { UserAuthRouter } from "./routes/auth/user-auth.routes.js";
 import { BooksRouter } from "./routes/books.routes.js";
 // import cors from "cors";
 
@@ -36,7 +36,7 @@ app.get("/", verifyToken, (req, res) => {
 });
 
 app.use("/auth", (req, res, next) => {
-  AuthRouter(req, res, next);
+  UserAuthRouter(req, res, next);
 });
 app.use("/books", BooksRouter);
 

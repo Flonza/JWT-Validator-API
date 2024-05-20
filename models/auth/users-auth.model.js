@@ -51,7 +51,7 @@ export class AuthModel {
       );
 
       const salt = await bcryptjs.genSalt(7);
-      const userHash = await bcryptjs.hash(user, salt);
+      const userHash = await bcryptjs.hash(username, salt);
       const key = jsonwebtoken.sign(
         { val: userHash },
         process.env.JWT_SECRET_VALID_VALUE,
@@ -68,6 +68,7 @@ export class AuthModel {
         severity: "success",
       };
     } catch (error) {
+      console.log(error);
       if (
         error.message ===
         "The user or email is already registered, please try another one."
