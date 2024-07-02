@@ -18,7 +18,6 @@ export const validatorResult = (req, res, next) => {
 export const validateSearch = (req, res, next) => {
   try {
     validationResult(req).throw();
-    console.log(validationResult(req).throw());
     return next();
   } catch (e) {
     console.log(e);

@@ -1,9 +1,9 @@
 import { Router } from "express";
-import { UserAuthController } from "../../controllers/auth/user-auth.controller.js";
+import { UserAuthController } from "../../../controllers/auth/user-auth.controller.js";
 import {
   loginValidator,
   registerValidation,
-} from "../../schemas/user.schema.js";
+} from "../../../schemas/user.schema.js";
 
 export const UserAuthRouter = Router();
 

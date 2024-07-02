@@ -2,8 +2,11 @@ import express from "express";
 import { CORS } from "./middlewares/CORS.js";
 import jwt from "jsonwebtoken";
 import { verifyToken } from "./middlewares/verifyToken.js";
-import { UserAuthRouter } from "./routes/auth/user-auth.routes.js";
 import { BooksRouter } from "./routes/books.routes.js";
+import { AdminRoutes } from "./routes/admin/admin.routes.js";
+import { AuthRouter } from "./routes/auth/auth.routes.js";
+import { rateLimit } from "express-rate-limit";
+import { AditionalInfoRouter } from "./routes/information-books/aditional.routes.js";
 // import cors from "cors";
 
 const app = express();
@@ -35,10 +38,23 @@ app.get("/", verifyToken, (req, res) => {
   });
 });
 
-app.use("/auth", (req, res, next) => {
-  UserAuthRouter(req, res, next);
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutos
+  max: 100, // limita cada IP a 100 solicitudes por ventana de 15 minutos
 });
-app.use("/books", BooksRouter);
+
+app.use(limiter);
+
+app.use("/auth", (req, res, next) => {
+  AuthRouter(req, res, next);
+});
+
+app.use("/books", (req, res, next) => {
+  BooksRouter(req, res, next);
+});
+app.use("/admin", AdminRoutes);
+
+app.use("/inf", AditionalInfoRouter);
 
 app.listen(PORT, () => {
   console.log(`Escuchando solicitudes en el puerto ${PORT}`);
